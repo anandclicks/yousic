@@ -16,17 +16,17 @@ import { Link } from "expo-router";
 const MusicList = () => {
   const [isMusicPlaying, setIsMusicPlaying] = useState(true);
   return (
-    <SafeAreaView>
+    <SafeAreaView className="bg-white p-5 pb-0">
       <View className="relative">
-        <LinearGradient className="h-full p-3" colors={["#fff", "#fff"]}>
-          <View>
+          <View className="h-full">
             <View className="flex items-center gap-3 flex-row h-16">
               <Icon color="black" size={25} name="music-2-fill" />
               <Text className="text-black font-semibold text-2xl uppercase ">
                 Me-you-sic
               </Text>
             </View>
-            <FlatList
+           <View className="pb-20">
+             <FlatList
               data={musicData}
               numColumns={2}
               columnWrapperStyle={{
@@ -73,8 +73,8 @@ const MusicList = () => {
                 </Link>
               )}
             ></FlatList>
+           </View>
           </View>
-        </LinearGradient>
       </View>
     </SafeAreaView>
   );
