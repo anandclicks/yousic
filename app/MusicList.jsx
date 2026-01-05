@@ -1,0 +1,117 @@
+import { View, Text, Image, FlatList, Pressable } from "react-native";
+import { useContext } from "react";
+import Icon from "react-native-remix-icon";
+import { musicData } from "@/data/music";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Link, router } from "expo-router";
+import { MusicContext } from "../context/MusicContext";
+
+const MusicList = () => {
+  const { setCurrentSong, setPlayingSong, playingSong } =
+    useContext(MusicContext);
+
+  return (
+    <SafeAreaView className="bg-white p-5 pb-0">
+      <View className="relative">
+        <View className="h-full">
+          <View className="flex items-center gap-3 flex-row h-16">
+            <Icon color="black" size={25} name="music-2-fill" />
+            <Text className="text-black font-semibold text-2xl uppercase ">
+              Me-you-sic
+            </Text>
+          </View>
+          <View className="pb-20">
+            <FlatList
+              data={musicData}
+              numColumns={2}
+              columnWrapperStyle={{
+                justifyContent: "space-between",
+                marginTop: 15,
+              }}
+              showsVerticalScrollIndicator={false}
+              renderItem={(items) => (
+                <Link
+                  onPress={() => {
+                    const song = {
+                      id: items.item.id.toString(),
+                      title: items.item.title,
+                      artist: items.item.artist,
+                      artwork: items.item.artwork,
+                      url: items.item.url,
+                    };
+
+                    setCurrentSong(song);
+                    setPlayingSong(song);
+                  }}
+                  href={{
+                    pathname: "/Playing",
+                  }}
+                  asChild
+                >
+                  <Pressable className="h-64 w-[48%] p-2 flex justify-between bg-white/15 rounded-lg border-[1px] border-black/15">
+                    <View className="h-3/4 relative">
+                      <Image
+                        className="h-full w-full rounded-md"
+                        source={{ uri: items?.item?.artwork }}
+                      />
+                      <View className="absolute bottom-0 right-0 m-2 bg-white rounded-full h-[30px] w-[30px] flex justify-center items-center">
+                        <Icon name="play-circle-line" size={20} />
+                      </View>
+                    </View>
+                    <View className="h-1/4 flex flex-row justify-between items-center">
+                      <View>
+                        <Text className="text-black text-[15px] font-semibold">
+                          {items?.item.title}
+                        </Text>
+                        <Text className="text-black leading-4">
+                          {items?.item?.artist}
+                        </Text>
+                      </View>
+                      <Icon size={20} name="music-2-fill" />
+                    </View>
+                  </Pressable>
+                </Link>
+              )}
+            ></FlatList>
+          </View>
+        </View>
+        {playingSong && <Pressable
+         onPress={() => {
+                    const song = {
+                      id: playingSong.id.toString(),
+                      title: playingSong.title,
+                      artist: playingSong.artist,
+                      artwork: playingSong.artwork,
+                      url: playingSong.url,
+                    };
+
+                    setCurrentSong(song);
+                    router.push('/Playing')
+                  }}
+          className={
+            "h-[60px] items-center px-3  flex-row justify-between w-full bg-white border-[1px] border-stone-300 absolute z-20 mb-5 rounded-full shadow-2xl left-0 bottom-0"
+          }
+        >
+          <View className={"flex gap-2 flex-row items-center"}>
+            <View className={"h-[43px] w-[43px] rounded-full overflow-hidden"}>
+              <Image
+                source={{uri : playingSong?.artwork}}
+                className={"h-full w-full object-cover"}
+              />
+            </View>
+            <View>
+             <Text className={"font-semibold"}>{playingSong?.title || "NA"}</Text>
+            <Text className={"text-sm"}>{playingSong?.artist || "NA"}</Text>
+            </View>
+          </View>
+          <View>
+            <Text className={"font-semibold text-sm text-green-600 flex items-center flex-row "}>
+              Playing</Text>
+          </View>
+        </Pressable>}
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default MusicList;

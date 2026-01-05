@@ -14,5 +14,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-, "app/Playing.jsx"  ]
+, "app/Playing.jsx", "app/MusicList.jsx"  ]
 }
